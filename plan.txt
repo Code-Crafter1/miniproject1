@@ -1,0 +1,6 @@
+humlog ek basic sa app bna rahe jaha user  apna posts likh payenge 
+login and register
+logout
+post creation
+post like
+post deletion (only who can delete who had written this post)
