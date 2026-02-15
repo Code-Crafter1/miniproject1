@@ -24,9 +24,23 @@ app.get("/login", (req, res) => {
 app.get("/profile", isloggedIn, async (req, res) => {
   //   console.log(req.user);
   let user = await userModel.findOne({ email: req.user.email });
-  console.log(user);
-
+  //   console.log(user);
+  await user.populate("posts");
   res.render("profile", { user });
+});
+
+app.post("/post", isloggedIn, async (req, res) => {
+  //   console.log(req.user);
+  let user = await userModel.findOne({ email: req.user.email });
+  let { content } = req.body;
+  let post = await postModel.create({
+    user: user._id,
+    content,
+    // content: req.body.content,
+  });
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect("/profile");
 });
 
 app.post("/register", async (req, res) => {
