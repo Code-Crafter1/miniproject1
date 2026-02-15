@@ -22,8 +22,9 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/profile", isloggedIn, (req, res) => {
-  console.log(req.user);
-  res.render("login");
+  //   console.log(req.user);
+  
+  res.render("profile");
 });
 
 app.post("/register", async (req, res) => {
