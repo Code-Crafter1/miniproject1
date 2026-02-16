@@ -29,6 +29,34 @@ app.get("/profile", isloggedIn, async (req, res) => {
   res.render("profile", { user });
 });
 
+app.get("/like/:id", isloggedIn, async (req, res) => {
+  //   console.log(req.user);
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  //   console.log(user);
+  //   await post.populate("user");
+  if (post.likes.indexOf(req.user.userid) === -1) {
+    post.likes.push(req.user.userid);
+  } else {
+    post.likes.splice(post.likes.indexOf(req.user.userid), 1);
+  }
+  //   post.likes.push(req.user.userid); //if we write it again it counts twice so we have to check if the user has already liked the post or not
+  await post.save();
+  res.redirect("/profile");
+});
+
+app.get("/edit/:id", isloggedIn, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  res.render("edit", { post });
+});
+
+app.post("/update/:id", isloggedIn, async (req, res) => {
+  let post = await postModel.findOneAndUpdate(
+    { _id: req.params.id },
+    { content: req.body.content },
+  );
+  res.redirect("/profile");
+});
+
 app.post("/post", isloggedIn, async (req, res) => {
   //   console.log(req.user);
   let user = await userModel.findOne({ email: req.user.email });
