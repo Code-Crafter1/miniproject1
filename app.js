@@ -57,6 +57,26 @@ app.post("/update/:id", isloggedIn, async (req, res) => {
   res.redirect("/profile");
 });
 
+app.get("/delete/:id", isloggedIn, async (req, res) => {
+  const postId = req.params.id;
+
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+
+  // compare user ids directly
+  if (!post.user.equals(req.user.userid)) {
+    return res.send("Unauthorized");
+  }
+
+  await postModel.findOneAndDelete(postId);
+
+  await userModel.findOneAndUpdate(
+    { _id: req.user.userid },
+    { $pull: { posts: postId } },
+  );
+
+  res.redirect("/profile");
+});
+
 app.post("/post", isloggedIn, async (req, res) => {
   //   console.log(req.user);
   let user = await userModel.findOne({ email: req.user.email });
