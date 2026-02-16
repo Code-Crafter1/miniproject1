@@ -25,6 +25,10 @@ app.get("/profile", isloggedIn, async (req, res) => {
   //   console.log(req.user);
   let user = await userModel.findOne({ email: req.user.email });
   //   console.log(user);
+  if (!user) {
+    res.clearCookie("token");
+    return res.redirect("/login");
+  }
   await user.populate("posts");
   res.render("profile", { user });
 });
@@ -107,7 +111,8 @@ app.post("/register", async (req, res) => {
       });
       let token = jwt.sign({ email: email, userid: user._id }, "shhhh");
       res.cookie("token", token);
-      res.send("user created");
+      //   res.send("user created");
+      res.redirect("/profile");
     });
   });
 });
