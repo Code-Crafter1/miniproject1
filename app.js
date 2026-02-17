@@ -7,42 +7,43 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const path = require("path");
-const multer = require("multer");
+// const multer = require("multer");
+const multerconfig = require("./config/multerconfig");  
 
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images/uploads"); // from where the file will be uploaded in our system
-  },
-  filename: function (req, file, cb) {
-    crypto.randomBytes(12, function (err, bytes) {
-      const fn = bytes.toString("hex") + path.extname(file.originalname);
-      cb(null, fn);
-    });
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./public/images/uploads"); // from where the file will be uploaded in our system
+//   },
+//   filename: function (req, file, cb) {
+//     crypto.randomBytes(12, function (err, bytes) {
+//       const fn = bytes.toString("hex") + path.extname(file.originalname);
+//       cb(null, fn);
+//     });
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
   //   console.log("hey");
   res.render("index");
 });
 
-app.get("/test", (req, res) => {
-  //   console.log("hey");
-  res.render("test");
-});
+// app.get("/test", (req, res) => {
+//   //   console.log("hey");
+//   res.render("test");
+// });
 
-app.post("/upload", upload.single("image"), (req, res) => {
-  console.log(req.file);
-  console.log("type =", typeof req.file);
-  res.send("File uploaded successfully");
-});
+// app.post("/upload", upload.single("image"), (req, res) => {
+//   console.log(req.file);
+//   console.log("type =", typeof req.file);
+//   res.send("File uploaded successfully");
+// });
 
 app.get("/login", (req, res) => {
   //   console.log("hey");
