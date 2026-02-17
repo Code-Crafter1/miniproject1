@@ -12,10 +12,13 @@
         <a
           href="/logout"
           class="px-4 py-2 bg-red-700 block rounded-md w-20 text-center mb-1"
-          >Logout</a
-        >
+          >Logout</a>
       </div>
-
+      <div class="flex justify-center -mt-10 mb-1">
+  <div class="w-20 h-20 rounded-full overflow-hidden border-0.5 border-white">
+    <img class="w-full h-full object-cover" src="/images/uploads/<%=user.profilepic%>" alt="icon"/>
+  </div>
+</div>
       <h3 class="text-center text-4xl mb-2">
         <span class="text-pink-500">Hello,</span><%= user.name %>👋
       </h3>
